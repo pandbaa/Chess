@@ -12,8 +12,8 @@
 }
 
 .board {
-  width: calc(64px*8);
-  height: calc(64px*8);
+  width: calc(64px * 8);
+  height: calc(64px * 8);
   display: flex;
   flex-wrap: wrap;
 }
@@ -48,4 +48,11 @@
   width: 12px;
   border-radius: 50%;
   background-color: rgb(6, 221, 6);
+}
+
+.lost {
+  height: calc(50vh - 60px);
+  padding: 30px;
+  margin-left: 50px;
+  background-color: lightgray;
 }

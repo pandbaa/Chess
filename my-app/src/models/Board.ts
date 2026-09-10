@@ -6,9 +6,13 @@ import { Knight } from "./figures/Knight";
 import { Pawn } from "./figures/Pawn";
 import { Queen } from "./figures/Queen";
 import { Rook } from "./figures/Rook";
+import { Figure } from "./figures/Figure";
 
 export class Board {
   cells: Cell[][]=[];
+  lostBlackFigure: Figure[]=[];
+  lostWhiteFigure: Figure[]=[];
+
   public initCells() {
     for (let i=0;i<8;i++) {
       const row: Cell[]=[]
@@ -77,6 +81,8 @@ export class Board {
   public getCopyBoard(): Board {
     const newBoard=new Board();
     newBoard.cells = this.cells;
+    newBoard.lostBlackFigure=this.lostBlackFigure;
+    newBoard.lostWhiteFigure=this.lostWhiteFigure;
     return newBoard;
   }
   public highlightCells(selestedCell: Cell | null) {
