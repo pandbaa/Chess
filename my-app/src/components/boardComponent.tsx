@@ -7,13 +7,13 @@ import { Player } from '../models/Player';
 interface BoardProps {
   board: Board;
   setBoard: (board: Board) => void;
+  selectedCell: Cell | null;
+  setSelectedCell: (cell: Cell | null)=>void;
   currentPlayer: Player | null;
   swapPlayer: ()=>void;
 }
 
-const BoardComponent: FC<BoardProps> =({board, setBoard, swapPlayer, currentPlayer})=>{
-  const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
-  
+const BoardComponent: FC<BoardProps> =({board, setBoard, swapPlayer, currentPlayer, selectedCell, setSelectedCell})=>{
   function click(cell: Cell) {
     if (selectedCell && selectedCell!==cell && selectedCell.figure?.canMove(cell)) {
       selectedCell.moveFigure(cell);

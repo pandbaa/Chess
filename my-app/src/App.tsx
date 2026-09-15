@@ -4,6 +4,7 @@ import './App.css';
 import { Board } from './models/Board';
 import { Player } from './models/Player';
 import { Colors } from './models/Colors';
+import { Cell } from './models/Cell';
 import LostFigures from './components/lostFigures';
 import Timer from './components/timer';
 
@@ -12,6 +13,7 @@ function App() {
   const [blackPlayer, setBlackPlayer] = useState(new Player(Colors.BLACK));
   const [whitePlayer, setWhitePlayer] = useState(new Player(Colors.WHITE));
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
+  const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
   useEffect(()=>{
     restart();
     setCurrentPlayer(whitePlayer);
@@ -20,7 +22,9 @@ function App() {
     const newBoard=new Board();
     newBoard.initCells()
     newBoard.addFigures();
-    setBoard(newBoard)
+    setBoard(newBoard);
+    setSelectedCell(null);
+    setCurrentPlayer(new Player(Colors.WHITE));
   }
   function swapPlayer() {
     setCurrentPlayer(currentPlayer?.color === Colors.WHITE ? blackPlayer : whitePlayer)
@@ -28,7 +32,7 @@ function App() {
   return (
     <div className='app'>
       <Timer restart={restart} currentPlayer={currentPlayer}/>
-      <BoardComponent board={board} setBoard={setBoard} currentPlayer={currentPlayer} swapPlayer={swapPlayer}/>
+      <BoardComponent board={board} setBoard={setBoard} currentPlayer={currentPlayer} swapPlayer={swapPlayer} selectedCell={selectedCell} setSelectedCell={setSelectedCell}/>
       <div>
         <LostFigures title={"Черные фигуры"} figures={board.lostBlackFigure}/>
         <LostFigures title={"Белые фигуры"} figures={board.lostWhiteFigure}/>

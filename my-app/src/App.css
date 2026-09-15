@@ -89,6 +89,7 @@
 }
 
 button {
+  width: 97%;
   padding: 10px 15px;
   font-size: 16px;
   background: blue;
@@ -101,4 +102,17 @@ button {
 
 button:hover {
   background: #5a52d5;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel > :first-child {
+  background-color: rgb(211, 107, 4);
+}
+.panel > :first-child:hover {
+  background-color: rgb(226, 201, 142);
 }

@@ -14,10 +14,6 @@ const Timer: FC<TimerProps> = ({currentPlayer, restart})=>{
   const [whiteTime, setWhiteTime] = useState(300);
   const [winner, setWinner] = useState<Colors | null>(null);
   const timer = useRef<null | ReturnType<typeof setInterval>>(null)
-  
-  useEffect(()=>{
-    startTimer()
-  }, [currentPlayer])
 
   useEffect(() => {
     if (blackTime <= 0) {
@@ -49,6 +45,13 @@ const Timer: FC<TimerProps> = ({currentPlayer, restart})=>{
     setWhiteTime(prev=>prev-1);
   }
   const heandleRestart =()=>{
+    stopTimer();
+    setBlackTime(300);
+    setWhiteTime(300);
+    setWinner(null);
+    restart();
+  }
+  const heandleStart=()=>{
     setBlackTime(300);
     setWhiteTime(300);
     setWinner(null);
@@ -57,8 +60,9 @@ const Timer: FC<TimerProps> = ({currentPlayer, restart})=>{
   }
   return (
     <div>
-      <div>
-        <button onClick={heandleRestart}>Перезапуск игры</button>
+      <div className="panel">
+        <button onClick={heandleStart}>Старт</button>
+        <button onClick={heandleRestart}>Перезапуск</button>
       </div>
       <h2>Черные - {blackTime}</h2>
       <h2>Белые - {whiteTime}</h2>
