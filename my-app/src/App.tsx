@@ -14,10 +14,16 @@ function App() {
   const [whitePlayer, setWhitePlayer] = useState(new Player(Colors.WHITE));
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
   const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
+  const [isBoardFlipped, setIsBoardFlipped] = useState(false);
+
   useEffect(()=>{
     restart();
     setCurrentPlayer(whitePlayer);
   }, [])
+  function flipBoard() {
+    setIsBoardFlipped(prev => !prev);
+    setSelectedCell(null);
+  }
   function restart() {
     const newBoard=new Board();
     newBoard.initCells()
@@ -31,8 +37,8 @@ function App() {
   }
   return (
     <div className='app'>
-      <Timer restart={restart} currentPlayer={currentPlayer}/>
-      <BoardComponent board={board} setBoard={setBoard} currentPlayer={currentPlayer} swapPlayer={swapPlayer} selectedCell={selectedCell} setSelectedCell={setSelectedCell}/>
+      <Timer restart={restart} currentPlayer={currentPlayer} flipBoard={flipBoard}/>
+      <BoardComponent board={board} setBoard={setBoard} currentPlayer={currentPlayer} swapPlayer={swapPlayer} selectedCell={selectedCell} setSelectedCell={setSelectedCell} isBoardFlipped={isBoardFlipped} flipBoard={flipBoard}/>
       <div>
         <LostFigures title={"Черные фигуры"} figures={board.lostBlackFigure}/>
         <LostFigures title={"Белые фигуры"} figures={board.lostWhiteFigure}/>

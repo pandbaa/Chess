@@ -7,31 +7,50 @@ import Modal from '../components/modal';
 interface TimerProps {
   currentPlayer: Player | null;
   restart: ()=>void;
+  flipBoard: ()=>void;
 }
 
-const Timer: FC<TimerProps> = ({currentPlayer, restart})=>{
+const Timer: FC<TimerProps> = ({currentPlayer, restart, flipBoard})=>{
   const [blackTime, setBlackTime] = useState(300);
   const [whiteTime, setWhiteTime] = useState(300);
   const [winner, setWinner] = useState<Colors | null>(null);
+  const [isGameStarted, setIsGameStarted] = useState(false);
   const timer = useRef<null | ReturnType<typeof setInterval>>(null)
 
   useEffect(() => {
     if (blackTime <= 0) {
       setWinner(Colors.WHITE);
       stopTimer();
+      setIsGameStarted(false);
     } else if (whiteTime <= 0) {
       setWinner(Colors.BLACK);
       stopTimer();
+      setIsGameStarted(false);
     }
   }, [blackTime, whiteTime]);
 
-  function startTimer() {
+  useEffect(() => {
+    if (!isGameStarted || !currentPlayer || winner) return;
+
     if (timer.current) {
-      clearInterval(timer.current)
+      clearInterval(timer.current);
     }
-    const callback=currentPlayer?.color === Colors.WHITE ? decrementWhiteTimer : decrementBlakTimer;
-    timer.current=setInterval(callback, 1000);
-  }
+
+    const callback =
+      currentPlayer.color === Colors.WHITE
+        ? decrementWhiteTimer
+        : decrementBlakTimer;
+
+    timer.current = setInterval(callback, 1000);
+
+    return () => {
+      if (timer.current) {
+        clearInterval(timer.current);
+        timer.current = null;
+      }
+    };
+  }, [currentPlayer, winner, isGameStarted]);
+
   function stopTimer() {
   if (timer.current) {
     clearInterval(timer.current);
@@ -49,6 +68,7 @@ const Timer: FC<TimerProps> = ({currentPlayer, restart})=>{
     setBlackTime(300);
     setWhiteTime(300);
     setWinner(null);
+    setIsGameStarted(false);
     restart();
   }
   const heandleStart=()=>{
@@ -56,13 +76,14 @@ const Timer: FC<TimerProps> = ({currentPlayer, restart})=>{
     setWhiteTime(300);
     setWinner(null);
     restart();
-    startTimer();
+    setIsGameStarted(true);
   }
   return (
     <div>
       <div className="panel">
         <button onClick={heandleStart}>Старт</button>
         <button onClick={heandleRestart}>Перезапуск</button>
+        <button onClick={flipBoard}>Смена сторон игроков</button>
       </div>
       <h2>Черные - {blackTime}</h2>
       <h2>Белые - {whiteTime}</h2>

@@ -32,11 +32,11 @@
 }
 
 .black {
-  background-color: blue;
+  background-color: rgb(69, 115, 230);
 }
 
 .white {
-  background-color: rgb(226, 201, 142);
+  background-color: rgb(235, 217, 174);
 }
 
 .selected {

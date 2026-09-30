@@ -11,9 +11,11 @@ interface BoardProps {
   setSelectedCell: (cell: Cell | null)=>void;
   currentPlayer: Player | null;
   swapPlayer: ()=>void;
+  isBoardFlipped: boolean;
+  flipBoard: ()=>void;
 }
 
-const BoardComponent: FC<BoardProps> =({board, setBoard, swapPlayer, currentPlayer, selectedCell, setSelectedCell})=>{
+const BoardComponent: FC<BoardProps> =({board, setBoard, swapPlayer, currentPlayer, selectedCell, setSelectedCell, isBoardFlipped, flipBoard})=>{
   function click(cell: Cell) {
     if (selectedCell && selectedCell!==cell && selectedCell.figure?.canMove(cell)) {
       selectedCell.moveFigure(cell);
@@ -38,14 +40,18 @@ const BoardComponent: FC<BoardProps> =({board, setBoard, swapPlayer, currentPlay
     setBoard(newBoard);
   }
 
+  const rows = isBoardFlipped ? [...board.cells].reverse() : board.cells;
+
   return (
     <div>
     <h3>Текущий игрок {currentPlayer?.color}</h3>
     <div className='board'>
-      {board.cells.map((row, index)=>
-        <React.Fragment key={index}>
-          {row.map(cell=><CellComponent cell={cell} key={cell.id} selected={cell.x===selectedCell?.x && cell.y===selectedCell?.y} click={() => click(cell)} />)}
+      {rows.map((row, rowIndex)=>{
+        const cells = isBoardFlipped ? [...row].reverse() : row;
+        return <React.Fragment key={rowIndex}>
+          {cells.map(cell=><CellComponent cell={cell} key={cell.id} selected={cell.x===selectedCell?.x && cell.y===selectedCell?.y} click={() => click(cell)} />)}
         </React.Fragment>
+      }
       )}
     </div>
     </div>
